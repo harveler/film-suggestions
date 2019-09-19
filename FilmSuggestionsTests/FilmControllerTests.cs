@@ -9,16 +9,20 @@ using FilmSuggestions.Models;
 using System.Web;
 using System.Net;
 using FilmSuggestions.Controllers;
+using FilmSuggestions.Services;
 
 namespace FilmSuggestionsTests
 {
     public class FilmControllerTests
     {
         [Fact]
-        public void GenerateFilmSuggestion_ReturnsObject()
+        public void GenerateFilmSuggestion_ReturnsFilm()
         {
             // assert
-            var controller = new FilmController();
+            var film = new Film();
+            var mockService = new Mock<FilmService>(null);
+            mockService.Setup(u => u.GenerateFilmSuggestion()).Returns(film);
+            var controller = new FilmController(mockService.Object);
 
             // act
             var result = controller.GenerateFilmSuggestion();
