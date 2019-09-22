@@ -15,10 +15,9 @@ namespace FilmSuggestions.Controllers
         public FilmController(FilmService service) {
             _service = service;
         }
-        public Film GenerateFilmSuggestion() 
+        public void GenerateFilmSuggestion() 
         {
             var film = _service.GenerateFilmSuggestion();
-            return film;
         }
     }
 }
