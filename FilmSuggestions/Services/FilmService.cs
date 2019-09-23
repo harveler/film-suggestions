@@ -7,7 +7,9 @@ namespace FilmSuggestions.Services
 {
     public class FilmService
     {
-        static string _address = "http://www.omdbapi.com/?i=tt3896198&apikey=bf29ea07";
+        static string _address = "https://api.themoviedb.org/3/discover/movie?api_key=f6164895891c0436b46cf51cb281a28a";
+        static int genreId { get; set; }
+        static string genre = "&with_genres=" + genreId;
         private string result;
         public async Task<IEnumerable> GenerateFilmSuggestion()
         {
