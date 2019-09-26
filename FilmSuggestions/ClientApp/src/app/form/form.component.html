@@ -1,13 +1,16 @@
-<h4>Choose genre</h4>
-<mat-form-field>
-  <mat-label>Favorite food</mat-label>
-  <mat-select>
-    <mat-option *ngFor="" [value]="">
-      Option 1
-    </mat-option>
-  </mat-select>
-  <button mat-button>Get movie!</button>
-</mat-form-field>
+<div class="pick-genre">
+  <h4>Choose genre</h4>
+  <mat-form-field>
+    <mat-select>
+      <!-- <mat-option *ngFor="" [value]=""> -->
+      <mat-option>
+        Option 1
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<button mat-raised-button color="primary">Get movie</button>
 <h4>
-  <button mat-button>Pick a random movie!</button>
+  Or pick a completely random movie:
+  <button mat-raised-button color="accent">Pick a random movie</button>
 </h4>
