@@ -5,3 +5,16 @@
 button {
     margin: 15px;
 }
+
+ul.genres {
+    display: inline-block !important;
+    list-style: none;
+    padding-left: 0;
+    padding-right: 10px;
+}
+
+.container {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+}
