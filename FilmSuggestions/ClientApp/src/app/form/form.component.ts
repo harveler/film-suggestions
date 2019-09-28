@@ -20,12 +20,12 @@ export class FormComponent implements OnInit {
   }
 
   getMovie() {
-    return this.film$ = this.filmService.getMovieSuggestion();
+    return this.film$ = this.filmService.getFilmSuggestion();
   }
 
   getMovieBasedOnGenre() {
     if (!this.selectedGenres || this.selectedGenres.length === 0) {
-      return this.film$ = this.filmService.getMovieSuggestion();
+      return this.film$ = this.filmService.getFilmSuggestion();
     }
     const ids = this.getIds(this.selectedGenres);
     return this.film$ = this.filmService.getFilmSuggestionBasedOnGenre(ids);

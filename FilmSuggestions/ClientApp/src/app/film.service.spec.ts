@@ -56,14 +56,14 @@ describe('FilmService', () => {
   });
 
   it(
-    'getMovieSuggestion should return film', fakeAsync(() => {
+    'getFilmSuggestion should return film', fakeAsync(() => {
 
       // arrange
       const responseObject = movieData;
       let response = null;
 
       // act
-      filmService.getMovieSuggestion().subscribe(
+      filmService.getFilmSuggestion().subscribe(
         (receivedResponse: any) => {
           response = receivedResponse;
         },

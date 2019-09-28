@@ -84,9 +84,9 @@ describe('FormComponent', () => {
     expect(component.genres$).not.toBeNull();
   });
 
-  it('should call service with getMovieSuggestion if get movie button is clicked', () => {
+  it('should call service with getFilmSuggestion if get movie button is clicked', () => {
     // arrange
-    const spy = spyOn(filmService, 'getMovieSuggestion').and.callThrough();
+    const spy = spyOn(filmService, 'getFilmSuggestion').and.callThrough();
     const button = fixture.debugElement.query(By.css('#random-movie')).nativeElement;
 
     // act
@@ -100,7 +100,7 @@ describe('FormComponent', () => {
 
   it('should display movie details when received film object from server', () => {
     // arrange
-    spyOn(filmService, 'getMovieSuggestion').and.returnValue(of(movieData));
+    spyOn(filmService, 'getFilmSuggestion').and.returnValue(of(movieData));
     const button = fixture.debugElement.query(By.css('#random-movie')).nativeElement;
 
     // act
@@ -138,10 +138,10 @@ describe('FormComponent', () => {
     expect(component.film$).not.toBeNull();
   });
 
-  it('should call service with getMovieSuggestion if no genres specified and return movie', () => {
+  it('should call service with getFilmSuggestion if no genres specified and return movie', () => {
     // arrange
     const spy = spyOn(filmService, 'getFilmSuggestionBasedOnGenre');
-    const spyNoGenre = spyOn(filmService, 'getMovieSuggestion').and.returnValue(of(movieData));
+    const spyNoGenre = spyOn(filmService, 'getFilmSuggestion').and.returnValue(of(movieData));
     component.selectedGenres = [];
     const button = fixture.debugElement.query(By.css('#random-movie-with-genre')).nativeElement;
 

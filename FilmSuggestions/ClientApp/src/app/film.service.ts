@@ -15,7 +15,7 @@ export class FilmService {
 
   constructor(private http: HttpClient) { }
 
-  getMovieSuggestion(): Observable<Film> {
+  getFilmSuggestion(): Observable<Film> {
     const url = '/api/Film';
     return this.http.get<Film>(url, httpOptions)
       .pipe(catchError(this.handleError));
