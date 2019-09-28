@@ -1,9 +1,8 @@
-import { Film, Genres } from './models/film.model';
-import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
+import { Film, Genre } from './models/film.model';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -19,22 +18,22 @@ export class FilmService {
   getMovieSuggestion(): Observable<Film> {
     const url = '/api/Film';
     return this.http.get<Film>(url, httpOptions)
-    .pipe(catchError(this.handleError));
+      .pipe(catchError(this.handleError));
   }
 
-  getGenres(): Observable<Genres> {
-    const url = '/api/Film/Genres';
-    return this.http.get<Genres>(url, httpOptions)
-    .pipe(catchError(this.handleError));
+  getGenres(): Observable<Genre> {
+    const url = '/api/Film/GetGenres';
+    return this.http.get<Genre>(url, httpOptions)
+      .pipe(catchError(this.handleError));
   }
 
-  getFilmBasedOnGenre(genres: string[]): Observable<Film> {
-    const url = '/api/Film/GetFilmBasedOnGenre/' + `${genres}`;
+  getFilmSuggestionBasedOnGenre(genres: string[]): Observable<Film> {
+    const url = '/api/Film/GetFilmSuggestionBasedOnGenre/' + `${genres}`;
     return this.http.get<Film>(url, httpOptions)
-    .pipe(catchError(this.handleError));
+      .pipe(catchError(this.handleError));
   }
 
-  private handleError(error: any) {
+  handleError(error: any) {
     const errorMessage = (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     alert('Something went wrong. Please try again.');
     return throwError(error);
