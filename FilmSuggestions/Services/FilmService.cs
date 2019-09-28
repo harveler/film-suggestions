@@ -1,24 +1,16 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using FilmSuggestions.Models;
-using Microsoft.AspNetCore.Mvc;
 using TMDbLib.Client;
-using TMDbLib.Objects.Discover;
 using TMDbLib.Objects.General;
-using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
-using TMDbLib.Utilities;
 
 namespace FilmSuggestions.Services
 {
     public class FilmService
     {
         TMDbClient client = new TMDbClient("f6164895891c0436b46cf51cb281a28a");
-        public IEnumerable<SearchMovie> GenerateFilmSuggestion()
+        public virtual SearchMovie GenerateFilmSuggestion()
         {
             SearchContainer<SearchMovie> results = client.DiscoverMoviesAsync()
                 .IncludeVideoMovies(false)
@@ -30,34 +22,38 @@ namespace FilmSuggestions.Services
                 return GenerateFilmSuggestion();
             }
 
-            var result = results.Results.Skip(RandomNumber(19)).Take(1);
+            var result = results.Results.Skip(RandomNumber(19)).Take(1).SingleOrDefault();
+
+            if (result == null) {
+                return GenerateFilmSuggestion();
+            }
 
             return result;
         }
 
-        public IEnumerable<SearchMovie> GenerateFilmBasedOnGenre(List<int> genreIds)
+        public virtual SearchMovie GetFilmSuggestionBasedOnGenre(List<int> genreIds)
         {
             try
             {
-                SearchContainer<SearchMovie> results = client.DiscoverMoviesAsync()
+                SearchContainer<SearchMovie> movies = client.DiscoverMoviesAsync()
                     .IncludeVideoMovies(false)
                     .IncludeAdultMovies(false)
                     .IncludeWithAllOfGenre(genreIds)
                     .Query(RandomNumber(500)).Result;
 
-                if (results == null)
+                if (movies == null)
                 {
-                    return GenerateFilmBasedOnGenre(genreIds);
+                    return GetFilmSuggestionBasedOnGenre(genreIds);
                 }
 
-                var result = results.Results.Skip(RandomNumber(19)).Take(1);
+                var movie = movies.Results.Skip(RandomNumber(19)).Take(1).SingleOrDefault();
 
-                if (result.Count() == 0)
+                if (movie == null)
                 {
-                    return GenerateFilmBasedOnGenre(genreIds);
+                    return GetFilmSuggestionBasedOnGenre(genreIds);
                 }
 
-                return result;
+                return movie;
             }
             catch (AggregateException ex)
             {
@@ -69,10 +65,10 @@ namespace FilmSuggestions.Services
             }
         }
 
-        public List<Genre> GetGenres()
+        public virtual List<Genre> GetGenres()
         {
-            List<Genre> result = client.GetMovieGenresAsync().Result;
-            return result;
+            List<Genre> genres = client.GetMovieGenresAsync().Result;
+            return genres;
         }
 
         private int RandomNumber(int upperBound)

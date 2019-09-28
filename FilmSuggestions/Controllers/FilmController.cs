@@ -1,19 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Web.Http;
-using System.Threading.Tasks;
 using FilmSuggestions.Models;
 using FilmSuggestions.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMDbLib.Client;
-using TMDbLib.Objects.Authentication;
-using TMDbLib.Objects.Changes;
 using TMDbLib.Objects.General;
-using TMDbLib.Objects.Movies;
-using TMDbLib.Objects.Reviews;
 using TMDbLib.Objects.Search;
 
 namespace FilmSuggestions.Controllers
@@ -30,77 +22,102 @@ namespace FilmSuggestions.Controllers
         }
 
         [HttpGet]
-        [Route("")]
         public Film GenerateFilmSuggestion()
         {
             var result = _service.GenerateFilmSuggestion();
-            var movie = CreateModelFromApiResult(result);
+            var film = CreateModelFromApiResult(result);
 
-            return movie;
+            return film;
         }
 
         [HttpGet]
-        [Route("GetFilmBasedOnGenre/{genre}")]
-        public Film GetFilmBasedOnGenre([FromRoute]string genre)
+        [Route("GetFilmSuggestionBasedOnGenre/{stringIds}")]
+        public Film GetFilmSuggestionBasedOnGenre([FromRoute] string stringIds)
         {
-            List<string> generas = genre.Split(',').ToList<string>();
-            List<int> ids = new List<int>();
-            foreach (var genr in generas)
+            if (stringIds == "" || stringIds == null)
             {
-                int newGenre = Int32.Parse(genr);
-                ids.Add(newGenre);
+                return GenerateFilmSuggestion();
             }
 
-            var result = _service.GenerateFilmBasedOnGenre(ids);
+            var intIds = GetIntIdsFromString(stringIds);
+
+            var result = _service.GetFilmSuggestionBasedOnGenre(intIds);
+
+            if (result == null)
+            {
+                return new Film();
+            }
+
             var movie = CreateModelFromApiResult(result);
 
             return movie;
         }
 
         [HttpGet]
-        [Route("Genres")]
+        [Route("GetGenres")]
         public List<Genre> GetGenres()
         {
             var genres = _service.GetGenres();
-            return genres;
 
+            return genres;
         }
 
-        private Film CreateModelFromApiResult(IEnumerable<SearchMovie> searchedMovie)
+        private List<int> GetIntIdsFromString(string stringIds)
         {
-            var query = searchedMovie.SingleOrDefault();
+            List<string> listOfStringIds = stringIds.Split(',').ToList<string>();
 
-            List<Genres> genres = new List<Genres>();
+            List<int> intIds = new List<int>();
 
-            foreach (var genre in query.GenreIds)
+            foreach (var stringId in listOfStringIds)
             {
-                Genres newGenre = new Genres
-                {
-                    Id = genre,
-                    Name = GetGenreName(genre),
-                };
-                genres.Add(newGenre);
+                int intId = Int32.Parse(stringId);
+                intIds.Add(intId);
             }
 
-            ExternalIdsMovie externalIds = client.GetMovieExternalIdsAsync(query.Id).Result;
+            return intIds;
+        }
 
+        private Film CreateModelFromApiResult(SearchMovie searchedMovie)
+        {
             Film result = new Film
             {
-                Id = externalIds.ImdbId,
-                Title = query.Title,
-                Overview = query.Overview,
-                Year = query.ReleaseDate.Value.Year,
-                Genres = genres,
+                Id = GetMovieImdbId(searchedMovie.Id),
+                Title = searchedMovie.Title,
+                Overview = searchedMovie.Overview,
+                Year = searchedMovie.ReleaseDate.Value.Year,
+                Genres = GetMovieGenres(searchedMovie.GenreIds),
             };
 
             return result;
         }
 
+        private string GetMovieImdbId(int id)
+        {
+            return client.GetMovieExternalIdsAsync(id).Result.ImdbId;
+        }
+        private List<Genres> GetMovieGenres(List<int> genreIds)
+        {
+            List<Genres> genres = new List<Genres>();
+
+            foreach (var genreId in genreIds)
+            {
+                genres.Add(new Genres
+                {
+                    Id = genreId,
+                        Name = GetGenreName(genreId),
+                });
+            }
+
+            return genres;
+        }
         private string GetGenreName(int genreId)
         {
             List<Genre> getGenres = client.GetMovieGenresAsync().Result;
-            string genreName = getGenres.Where(i => i.Id == genreId).Select(name => name.Name).SingleOrDefault();
-            return genreName;
+
+            return getGenres
+                .Where(id => id.Id == genreId)
+                .Select(name => name.Name)
+                .SingleOrDefault();
         }
     }
 }
