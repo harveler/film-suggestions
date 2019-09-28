@@ -3,10 +3,10 @@ export class Film {
     title: string;
     overview: string;
     year: number;
-    genres: Genres[];
+    genres: Genre[];
 }
 
-export class Genres {
+export class Genre {
     id: string;
     name: string;
 }
