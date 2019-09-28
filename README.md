@@ -1,6 +1,6 @@
 # Film Suggestions
 
-A random movie generator so that you never have to stare into a wall on Friday night not being able to decide what to watch. I used an external API to get data from Imdb. The API was created by the Movie Database (TMDb). I also implemeted the TMDbLib library for C# that utilizes this API and builds on top off it. 
+A random movie generator so that you never have to stare into a wall on Friday night not being able to decide what to watch. I used an external API to get data from Imdb. The API was created by the Movie Database (TMDb). I also implemeted the TMDbLib library for C# that utilizes this API and builds on top of it. 
 
 ### Getting Started
 Download the project locally using the command below.
