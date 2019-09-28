@@ -2,7 +2,7 @@
 
 A random movie generator so that you never have to stare into a wall on Friday night not being able to decide what to watch. I used an external API to get data from Imdb. The API was created by the Movie Database (TMDb). I also implemeted the TMDbLib library for C# that utilizes this API and builds on top of it. 
 
-There are two options of searches: with specifying genres and without.
+There are two options of searches: with specifying genres and without. Once received from query, the movie title, plot, year and its genres are displayed.
 
 ### Getting Started
 Download the project locally using the command below.
