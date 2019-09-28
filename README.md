@@ -18,11 +18,7 @@ git clone https://github.com/harveler/Quiz-App.git
 - XUnit
 
 ### License
-[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)
-
-This is free and unencumbered software released into the public domain.
-
-For more information, please refer to http://unlicense.org
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 
 ### Acknowledgements
 
