@@ -7,18 +7,22 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <button mat-raised-button color="primary" id="random-movie-with-genre" (click)="getMovieBasedOnGenre()">Get
+    movie</button>
 </div>
-<button mat-raised-button color="primary" (click)="getMovieBasedOnGenre()">Get movie</button>
-<h4>
-  Or pick a completely random movie:
-  <button mat-raised-button color="accent" (click)="getMovie()">Pick a random movie</button>
-</h4>
+<div class="pick-movie">
+  <h4>
+    Or pick a completely random movie:
+    <button mat-raised-button color="accent" id="random-movie" (click)="getMovie()">Pick a random movie</button>
+  </h4>
+</div>
 <div *ngIf="film$ | async as film" class="container">
-  <a [href]="'https://www.imdb.com/title/' + film.id"><h4 class="title">{{ film.title }}</h4></a>
+  <a [href]="'https://www.imdb.com/title/' + film.id">
+    <h4 class="title">{{ film.title }}</h4>
+  </a>
   <h6 class="year">{{ film.year }}</h6>
   <ul *ngFor="let genre of film.genres" class="genres">
-      <li>{{genre.name}}</li>
+    <li>{{genre.name}}</li>
   </ul>
   <p class="overview">{{ film.overview }}</p>
-  <p *ngFor="let filmGenre of film.genre"></p>
 </div>
