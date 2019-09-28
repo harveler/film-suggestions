@@ -1,11 +1,7 @@
-import { Film, Genres } from './../models/film.model';
+import { Film, Genre } from './../models/film.model';
 import { FilmService } from './../film.service';
 import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators';
-import {MatButtonModule} from '@angular/material/button';
-import {MatSelectModule} from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { Observer, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-form',
@@ -13,9 +9,9 @@ import { Observer, Observable } from 'rxjs';
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
-  film$: Observable<Film>;
-  genres$: Observable<Genres>;
-  selectedGenres: Genres[];
+  film$: Observable<Film> = null;
+  genres$: Observable<Genre> = null;
+  selectedGenres: Genre[] = null;
 
   constructor(private filmService: FilmService) { }
 
@@ -28,11 +24,14 @@ export class FormComponent implements OnInit {
   }
 
   getMovieBasedOnGenre() {
+    if (!this.selectedGenres || this.selectedGenres.length === 0) {
+      return this.film$ = this.filmService.getMovieSuggestion();
+    }
     const ids = this.getIds(this.selectedGenres);
-    return this.film$ = this.filmService.getFilmBasedOnGenre(ids);
+    return this.film$ = this.filmService.getFilmSuggestionBasedOnGenre(ids);
   }
 
-  getIds(genres: Genres[]): string[] {
+  getIds(genres: Genre[]): string[] {
     const ids = [];
     genres.forEach(genre => {
       ids.push(genre.id);
