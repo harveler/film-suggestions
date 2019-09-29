@@ -8,7 +8,7 @@ There are two options for searches: with specifying genres and without. Once rec
 Download the project locally using the command below.
 
 ```
-git clone https://github.com/harveler/Quiz-App.git
+git clone https://github.com/harveler/film-suggestions.git
 ```
 
 ### Technologies
